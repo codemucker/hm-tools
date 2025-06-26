@@ -1,0 +1,15 @@
+#!/usr/bin/env tm-env-bash
+#
+# Add all the user config files we may want to track
+#
+set -Eeuo pipefail
+_include .hm.common.sh 
+_include .hm.git.sh
+
+_add_to_git(){
+    echo "Adding '$1'"
+    hm git add "$1" || true
+}
+
+echo "adding config.."
+hm-ls-linux-config | xargs _add_to_git

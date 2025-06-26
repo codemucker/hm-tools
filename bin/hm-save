@@ -1,0 +1,19 @@
+#!/usr/bin/env tm-env-bash
+#
+# Save changes to home repository
+#
+# Purpose:
+#   Commits, pulls and pushes changes to home manager repository
+#   Wrapper around hm-commit with additional sync operations
+#
+# Usage:
+#   hm-save [message]
+#
+# Arguments:
+#   message - Optional commit message (passed to hm-commit)
+#
+
+
+hm-commit "$@"
+hm git pull --ff-only || true
+hm git push

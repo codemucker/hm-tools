@@ -1,0 +1,52 @@
+#!/usr/bin/env tm-env-bash
+#
+# Home management CLI
+#
+# Purpose:
+#   Main interface for managing home directory configuration and dotfiles
+#   Provides git integration and directory navigation for home manager
+#
+# Usage:
+#   hm git <git-args>          # Run git commands on home dir
+#   hm status|add|show|commit|ammend  # Shortcut for git commands
+#   hm <command>               # Run command in $HM_TOOLS_GIT_DIR
+#
+# Examples:hm-l 
+#   hm git status              # Show git status of home dir
+#   hm status                  # Shortcut for 'hm git status'
+#   hm ls                      # List files in home manager dir
+#
+# Error Handling:
+#   - Propagates exit codes from executed commands
+#
+set -Eeuo pipefail
+
+_include .hm.common.sh
+
+git_cmd="git --git-dir=$HM_TOOLS_GIT_DIR/.git --work-tree=$HOME"
+if [[ -z "${1:-}" ]]; then
+    _fail "need to supply at least one arg"
+fi
+
+cd "$HM_TOOLS_GIT_DIR" || _fail "Failed to change to $HM_TOOLS_GIT_DIR"
+
+if [[ "$1" == "git" ]]; then
+    shift
+    $git_cmd "$@"
+elif [[ "$1" == "status" || "$1" == "add" || "$1" == "config" || "$1" == "show" || "$1" == "commit" || "$1" == "diff" || "$1" == "log"  || "$1" == "restore"  || "$1" == "checkout" || "$1" == "push" ]]; then
+    $git_cmd "$@"
+elif [[ "$1" == "ammend" || "$1" == "amend"  ]]; then
+    shift
+    $git_cmd commit --amend "$@"
+elif [[ "$1" == "edit" ]]; then
+    shift    
+    hm-edit $@
+elif [[ "$1" == "save" ]]; then
+    shift    
+    hm-save $@
+elif [[ "$1" == "help" ]]; then
+    shift    
+    hm-help $@    
+else
+    "$@"
+fi

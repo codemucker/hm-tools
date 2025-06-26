@@ -1,0 +1,11 @@
+#!/usr/bin/env tm-env-bash
+#
+# Find all git repos in the $HOME dir
+#
+set -Eeuo pipefail
+_include .hm.common.sh .hm.git.sh
+
+_info "Searching for Git repositories in $HOME (max depth 10, excluding common cache/build/vendor dirs)..."
+__hm_git_repos_each "$@"
+_debug "git repo search complete."
+  

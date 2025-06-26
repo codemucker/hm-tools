@@ -1,0 +1,24 @@
+#!/usr/bin/env tm-env-bash
+
+#
+# Setup home with any deps, and remote repots etc, that are required
+#
+set -Eeuo pipefail
+_include .hm.common.sh .hm.git.sh
+
+__hm_git_ssh_agent
+
+if [[ -d "$HM_TOOLS_GIT_DIR" ]]; then
+    _info "Home git tracking dir: '$HM_TOOLS_GIT_DIR'"
+else
+    _info "No git tracking dir: '$HM_TOOLS_GIT_DIR'"
+    repo="${1:-}"
+    while [[ -z "$repo" ]]; do
+        _read "Repo to track home files in:" repo
+    done
+    git clone $repo $HM_TOOLS_GIT_DIR
+    alias hm="/usr/bin/git --git-dir=$HM_TOOLS_GIT_DIR/.git --work-tree=$HOME"
+    hm config --local status.showUntrackedFiles no
+    #hm checkout
+    _info "you can now run commands 'hm <command>' as in 'hm add .', 'hm git status'"
+fi

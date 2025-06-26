@@ -1,0 +1,75 @@
+#!/usr/bin/env tm-env-bash
+set -Eeuo pipefail
+_include .hm.common.sh .hm.git.sh
+
+
+__hm_commit_add_auto_track_dirs(){
+   _info "auto adding:"
+
+   auto_track_dirs=()
+   plugin_cfg="$(tm-cfg-get TM_PLUGINS_CFG_DIR)"
+   if [[ -n "$plugin_cfg" ]] && [[ -d "$plugin_cfg" ]]; then
+      auto_track_dirs+=("$plugin_cfg")
+   fi
+   for dir in "${HM_TOOLS_AUTO_TRACK_DIRS[@]}"; do
+      auto_track_dirs+=("$dir")
+   done
+
+   for dir in "${auto_track_dirs[@]}"; do
+      _info "   $dir"
+   done
+
+   for dir in "${auto_track_dirs[@]}"; do
+      hm git add "$dir" || _warn "error adding '$dir', ignoring"
+   done
+
+   # and all changed tracked files (no new ones)
+   hm git add -u || true
+   hm git status 
+
+}
+#
+# TODO: doesn't work with git worktrees atm!
+#
+__hm_commit_automatic() {
+
+   echo "ABORTED! No message"
+   _fail "Can't auto generate a commit message as aider doesn't work with git worktrees yet"
+   exit 1
+
+   # If this isn't a git repo, just exit
+  if ! hm rev-parse --is-inside-work-tree > /dev/null 2>&1 ; then
+    echo "Not a git repo. Exiting."
+    exit
+  fi
+
+  # If repo is clean, just exit
+  if hm diff-index --quiet HEAD --; then
+    echo "Repo is clean. Nothing to commit. Exiting."
+    exit
+  fi
+
+  # Perform the commit, and push if the user says so
+  my-aider --commit && \
+    echo && \
+    hm git show -1 --color
+}
+
+
+__hm_git_ssh_agent
+__hm_commit_add_auto_track_dirs
+
+commit_msg="${1:-}"
+if [[ ! -z  "$commit_msg" ]]; then
+   hm commit -m "$commit_msg"
+else
+   _read "Commit message: " commit_msg   
+   if [[ ! -z "$commit_msg" ]]; then
+      hm git commit -m "$commit_msg"
+   else
+      __hm_commit_automatic
+   fi
+fi
+# remove the changes which appear in the checked out repo staging area
+_pushd "$HM_TOOLS_GIT_DIR" || _fail "Error changing to dir '$HM_TOOLS_GIT_DIR'"
+git reset HEAD --hard

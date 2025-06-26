@@ -1,0 +1,29 @@
+#!/usr/bin/env tm-env-bash
+#
+# List tracked files in home repository
+#
+# Purpose:
+#   Displays all files tracked by git in the home repository
+#   Also shows directories configured for auto-tracking
+#
+# Usage:
+#   hm-list-tracked-files
+#
+# Output:
+#   - List of tracked files relative to $HOME
+#   - List of auto-tracked directories
+#
+set -Eeuo pipefail
+_include .hm.common.sh
+
+cd "$HM_TOOLS_GIT_DIR"
+# clear out files in the staging or the checked out repo
+git reset HEAD --hard
+echo "Relative to $HOME"
+git ls-tree -r HEAD --name-only | sort
+
+echo ""
+echo "all file in the following dirs are auto tracked:"
+for dir in "${HM_TOOLS_AUTO_TRACK_DIRS[@]}"; do
+   echo "   '$dir'"
+done

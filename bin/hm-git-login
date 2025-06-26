@@ -1,0 +1,18 @@
+#!/usr/bin/env tm-env-bash
+#
+# Initialize git configuration for home manager
+#
+# Purpose:
+#   Sets up git authentication and configuration for home manager repository
+#
+# Usage:
+#   hm-git-login
+#
+# Environment:
+#   HM_TOOLS_BIN - Path to home manager bin directory
+#
+set -Eeuo pipefail
+_include .hm.common.sh .hm.git.sh
+
+__hm_git_ssh_agent
+

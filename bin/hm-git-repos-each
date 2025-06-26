@@ -1,0 +1,6 @@
+#!/usr/bin/env tm-env-bash
+
+set -Eeuo pipefail
+_include .hm.common.sh .hm.git.sh
+
+__hm_git_repos_each "$@"
