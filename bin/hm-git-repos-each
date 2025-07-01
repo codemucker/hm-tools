@@ -3,4 +3,5 @@
 set -Eeuo pipefail
 _include .hm.common.sh .hm.git.sh
 
+# use 'git-tools' ?
 __hm_git_repos_each "$@"
