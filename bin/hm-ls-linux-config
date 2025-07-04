@@ -6,7 +6,7 @@ set -Eeuo pipefail
 #source "$TM_BIN/.tm.boot.sh"
 _include .hm.common.sh .hm.linux.sh
 
-_main(){
+main(){
     local callback_func="${1:-echo}"
 
     # Define common KDE/Debian/Neon config directories
@@ -130,4 +130,4 @@ _main(){
 
 }
 
-_main "$@"
+main "$@"

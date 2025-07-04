@@ -10,7 +10,7 @@
 #   hm-list-tracked-files
 #
 # Output:
-#   - List of tracked files relative to $HOME
+#   - List of tracked files relative to $HM_TOOLS_TRACK_DIR
 #   - List of auto-tracked directories
 #
 set -Eeuo pipefail
@@ -19,7 +19,7 @@ _include .hm.common.sh
 cd "$HM_TOOLS_GIT_DIR"
 # clear out files in the staging or the checked out repo
 git reset HEAD --hard
-echo "Relative to $HOME"
+echo "Relative to $HM_TOOLS_TRACK_DIR"
 git ls-tree -r HEAD --name-only | sort
 
 echo ""

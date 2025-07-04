@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+#
+# Setup home with any deps, and remote repots etc, that are required
+#
+set -Eeuo pipefail
+_include .hm.common.sh .hm.git.sh
+
+cat << EOF
+hm git <git-args>          # Run git commands on home dir
+hm status|add|show|commit|amend  # Shortcut for git commands
+hm <command>               # Run command in $HM_TOOLS_GIT_DIR
+
+Examples:hm
+  hm git status              # Show git status of home dir
+  hm status                  # Shortcut for 'hm git status'
+  hm ls                      # List files in home manager dir
+  hm save                    # commit changes files and push
+  hm help                    # show this help
+EOF
+
+hm-info

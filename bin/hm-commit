@@ -7,10 +7,11 @@ __hm_commit_add_auto_track_dirs(){
    _info "auto adding:"
 
    auto_track_dirs=()
-   plugin_cfg="$(tm-cfg-get TM_PLUGINS_CFG_DIR)"
-   if [[ -n "$plugin_cfg" ]] && [[ -d "$plugin_cfg" ]]; then
-      auto_track_dirs+=("$plugin_cfg")
-   fi
+   # TODO: we should ask if we want to include this
+#   plugin_cfg="$(tm-cfg-get TM_PLUGINS_CFG_DIR)"
+#   if [[ -n "$plugin_cfg" ]] && [[ -d "$plugin_cfg" ]]; then
+#      auto_track_dirs+=("$plugin_cfg")
+#   fi
    for dir in "${HM_TOOLS_AUTO_TRACK_DIRS[@]}"; do
       auto_track_dirs+=("$dir")
    done

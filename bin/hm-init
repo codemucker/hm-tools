@@ -17,7 +17,7 @@ else
         _read "Repo to track home files in:" repo
     done
     git clone $repo $HM_TOOLS_GIT_DIR
-    alias hm="/usr/bin/git --git-dir=$HM_TOOLS_GIT_DIR/.git --work-tree=$HOME"
+    alias hm="/usr/bin/git --git-dir=$HM_TOOLS_GIT_DIR/.git --work-tree=$HM_TOOLS_TRACK_DIR"
     hm config --local status.showUntrackedFiles no
     #hm checkout
     _info "you can now run commands 'hm <command>' as in 'hm add .', 'hm git status'"

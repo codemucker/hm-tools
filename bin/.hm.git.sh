@@ -56,23 +56,24 @@ __hm_git_find_all_repos() {
     done
 }
 
-# Function to find all git repositories in $HOME
+# Function to find all git repositories in $root
 # Excludes common large/cache directories and limits depth.
 __hm_git_find_possible_repos() {
-  #_debug "Searching for Git repositories in $HOME (max depth 10, excluding common cache/build/vendor dirs)..."
+  local root="${HM_TOOLS_TRACK_DIR}"
+  #_debug "Searching for Git repositories in $root (max depth 10, excluding common cache/build/vendor dirs)..."
   # -maxdepth 10: Limit recursion depth to prevent excessive search times.
   # \( ... \): Groups conditions for directories to prune.
   # -name "node_modules" -o -name ".cache" ... : Specifies directory names to exclude.
   #   These are common directories that can be very large and are unlikely to contain user-managed git repos
   #   or are repos that are part of a build/dependency system.
-  # -path "$HOME/Library/*" ... : Excludes common system/application data folders.
+  # -path "$root/Library/*" ... : Excludes common system/application data folders.
   # -prune: If any of the preceding -name or -path conditions match, do not descend into that directory.
   # -o: OR operator. If -prune was not executed, proceed to the next part.
   # -type d -name ".git": Find directories that are named ".git".
   # -print: Print the path of the found ".git" directory.
   # sed 's|/\.git$||': Removes the trailing "/.git" from each found path to give the actual repository root.
   # sort -u: Sorts the list of repository paths and removes duplicates.
-  find "$HOME" -maxdepth 10 \
+  find "$root" -maxdepth 10 \
     \( \
       -name "node_modules" \
       -o -name ".cache" \
@@ -90,26 +91,26 @@ __hm_git_find_possible_repos() {
       -o -name ".vscode" \
       -o -name ".svn" \
       -o -name "CVS" \
-      -o -path "$HOME/Library/*" \
-      -o -path "$HOME/Pictures/*" \
-      -o -path "$HOME/Music/*" \
-      -o -path "$HOME/Videos/*" \
-      -o -path "$HOME/Downloads/*" \
-      -o -path "$HOME/.local/share/*" \
-      -o -path "$HOME/.var/app/*" \
-      -o -path "$HOME/snap/*" \
-      -o -path "$HOME/.Trash/*" \
-      -o -path "$HOME/.bundle/*" \
-      -o -path "$HOME/.gem/*" \
-      -o -path "$HOME/.npm/*" \
-      -o -path "$HOME/.nvm/*" \
-      -o -path "$HOME/.pyenv/*" \
-      -o -path "$HOME/.rbenv/*" \
-      -o -path "$HOME/.sdkman/*" \
-      -o -path "$HOME/go/pkg/*" \
-      -o -path "$HOME/go/src/*" \
-      -o -path "$HOME/.cargo/registry/*" \
-      -o -path "$HOME/.rustup/*" \
+      -o -path "$root/Library/*" \
+      -o -path "$root/Pictures/*" \
+      -o -path "$root/Music/*" \
+      -o -path "$root/Videos/*" \
+      -o -path "$root/Downloads/*" \
+      -o -path "$root/.local/share/*" \
+      -o -path "$root/.var/app/*" \
+      -o -path "$root/snap/*" \
+      -o -path "$root/.Trash/*" \
+      -o -path "$root/.bundle/*" \
+      -o -path "$root/.gem/*" \
+      -o -path "$root/.npm/*" \
+      -o -path "$root/.nvm/*" \
+      -o -path "$root/.pyenv/*" \
+      -o -path "$root/.rbenv/*" \
+      -o -path "$root/.sdkman/*" \
+      -o -path "$root/go/pkg/*" \
+      -o -path "$root/go/src/*" \
+      -o -path "$root/.cargo/registry/*" \
+      -o -path "$root/.rustup/*" \
     \) -prune \
     -o -type d -name ".git" -print \
     | sed 's|/\.git$||' | sort -u 

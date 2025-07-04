@@ -1,23 +1,24 @@
 __hm_linux_list_config(){
     local callback_func="${1:-echo}"
+    local root="$HM_TOOLS_TRACK_DIR"
 
     # Define common KDE/Debian/Neon config directories
     local CONFIG_DIRS=(
-        "$HOME/.config"
-        "$HOME/.local/share"
-        "$HOME/.kde/share/config" # Older KDE configs
-        "$HOME/.fonts"
-        "$HOME/.icons"
-        "$HOME/.themes"
-        "$HOME/.gtkrc-2.0"
-        "$HOME/.bashrc"
-        "$HOME/.zshrc"
-        "$HOME/.profile"
-        "$HOME/.xinitrc"
-        "$HOME/.Xresources"
-        "$HOME/.gnupg"
-        "$HOME/.ssh"
-        "$HOME/.gitconfig"
+        "$root/.config"
+        "$root/.local/share"
+        "$root/.kde/share/config" # Older KDE configs
+        "$root/.fonts"
+        "$root/.icons"
+        "$root/.themes"
+        "$root/.gtkrc-2.0"
+        "$root/.bashrc"
+        "$root/.zshrc"
+        "$root/.profile"
+        "$root/.xinitrc"
+        "$root/.Xresources"
+        "$root/.gnupg"
+        "$root/.ssh"
+        "$root/.gitconfig"
     )
 
     # Define common file extensions for config files

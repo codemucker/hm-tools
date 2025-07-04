@@ -1,0 +1,22 @@
+#!/usr/bin/env tm-env-bash
+
+#
+# Setup home with any deps, and remote repots etc, that are required
+#
+set -Eeuo pipefail
+_include .hm.common.sh .hm.git.sh
+
+if [[ -d "$HM_TOOLS_GIT_DIR" ]]; then
+    _info "Home dir: '$HM_TOOLS_TRACK_DIR'"
+    _info "Home git tracking dir: '$HM_TOOLS_GIT_DIR'"
+    _pushd "$HM_TOOLS_GIT_DIR"
+      echo "branch          : $(git branch --show-current)"
+      echo "remote          : $(git remote -v | grep '(push)' | sed 's/[ ]\+/ /g')"
+      echo "remote-branch   : $(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || echo '<none>')"
+      echo "tracked files   : $(git ls-files | wc -l)"
+      echo "pending changes : $(git status --short | wc -l)"
+      git status -s
+    _popd
+else
+    _info "No git tracking dir: '$HM_TOOLS_GIT_DIR'"
+fi
