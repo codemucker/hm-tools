@@ -1,4 +1,4 @@
-#!/usr/bin/env tm-env-bash
+#!/usr/bin/env env-tm-bash
 #
 # Find all git repos in the $HM_TOOLS_TRACK_DIR dir
 #
